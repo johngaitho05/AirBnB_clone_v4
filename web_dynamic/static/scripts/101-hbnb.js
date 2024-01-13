@@ -90,9 +90,17 @@ $(document).ready(function () {
                 <div class="description">
                     ${place.description}
                 </div>
+                <div class="reviews">
+                    <h2 class="article_subtitle">Reviews 
+                    <span class="reviews-toggle" data-place-id="${place.id}">show</span>
+                    </h2>
+                    <ul class="reviews-list">
+                    </ul>
+                </div>
             </article>`;
       });
       $('section.places').html(content);
+      $('.reviews-toggle').click(onToggleReviews);
     },
     dataType: 'json'
   });
@@ -101,7 +109,11 @@ $(document).ready(function () {
     $.ajax({
       url: 'http://0.0.0.0:5001/api/v1/places_search/',
       type: 'POST',
-      data: JSON.stringify({ amenities: Object.keys(amenities), states: Object.keys(states), cities: Object.keys(cities) }),
+      data: JSON.stringify({
+        amenities: Object.keys(amenities),
+        states: Object.keys(states),
+        cities: Object.keys(cities)
+      }),
       contentType: 'application/json',
       success: function (data) {
         let content = '';
@@ -119,11 +131,57 @@ $(document).ready(function () {
                 <div class="description">
                     ${place.description}
                 </div>
+                <div class="reviews">
+                    <h2 class="article_subtitle">Reviews 
+                    <span class="reviews-toggle" data-place-id="${place.id}">show</span>
+                    </h2>
+                    <ul class="reviews-list">
+                    </ul>
+                </div>
             </article>`;
         });
         $('section.places').html(content);
+        $('.reviews-toggle').click(onToggleReviews);
       },
       dataType: 'json'
     });
   });
+
+  function formatDate (dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'long' });
+    const year = date.getFullYear();
+    const dayWithSuffix = day + (day % 10 === 1 && day !== 11 ? 'st' : (day % 10 === 2 && day !== 12 ? 'nd' : (day % 10 === 3 && day !== 13 ? 'rd' : 'th')));
+
+    return dayWithSuffix + ' ' + month + ' ' + year;
+  }
+
+  function onToggleReviews () {
+    const $el = $(this);
+    const placeId = $el.data('place-id');
+    const container = $el.parent().parent().find('.reviews-list');
+    if ($el.hasClass('show')) {
+      container.html('');
+      $el.text('show');
+    } else {
+      $.get('http://0.0.0.0:5001/api/v1/places/' + placeId + '/reviews', function (data) {
+        if (!data.length) {
+          container.html('<p>No reviews found!</p>');
+        }
+        $.each(data, function (index, review) {
+          $.get(`http://0.0.0.0:5001/api/v1/users/${review.user_id}`, function (user) {
+            container.append(`<li>
+                          <div class="review_item">
+                            <h3>From ${user.first_name} ${user.last_name} the ${formatDate(review.created_at)}</h3>
+                            <p class="review_text">${review.text}</p>
+                          </div>
+                        </li>`);
+          });
+        });
+      });
+      $el.text('hide');
+    }
+    $el.toggleClass('show');
+  }
 });
