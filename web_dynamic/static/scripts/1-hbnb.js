@@ -1,5 +1,4 @@
-$(document).ready(function() {
-
+$(document).ready(function () {
   const amenities = {};
   $('input[type="checkbox"]').change(function () {
     if (this.checked) {
@@ -7,11 +6,11 @@ $(document).ready(function() {
     } else {
       delete amenities[$(this).data('id')];
     }
-    let chosenAmenities = Object.values(amenities);
+    const chosenAmenities = Object.values(amenities);
     if (chosenAmenities.length > 0) {
-      let selected = Object.values(amenities).join(', ')
-      let selected_truncated = selected.length > 50 ? selected.substring(0, 50) + '...' : selected;
-      $('div.amenities > h4').text(selected_truncated);
+      const selected = Object.values(amenities).join(', ');
+      const selectedTruncated = selected.length > 50 ? selected.substring(0, 50) + '...' : selected;
+      $('div.amenities > h4').text(selectedTruncated);
     } else {
       $('div.amenities > h4').html('&nbsp;');
     }
