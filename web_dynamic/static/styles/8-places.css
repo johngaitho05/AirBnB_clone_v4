@@ -9,8 +9,8 @@
 @media only screen and (max-width: 920px)
 {
     .places {
-	display: flex;
-	flex-wrap: wrap;
+        display: flex;
+        flex-wrap: wrap;
     }
 }
 
@@ -97,5 +97,44 @@
 }
 
 .user {
-  margin-bottom: 1.5%;
+    margin-bottom: 1.5%;
+}
+.article_subtitle {
+	font-size: 22px !important;
+	text-align: left !important;
+	width: 100%;
+	border-bottom: 1px solid #DDDDDD;
+    padding-bottom:  .7rem;
+}
+
+.reviews {
+    margin-top: 40px;
+    width: 100%;
+}
+.reviews-list {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+.reviews-list h3 {
+    margin: .7rem 0 .25rem;
+}
+
+.review_item {
+    margin-bottom: 10px;
+}
+
+.review_text {
+    margin: 0px;
+}
+
+.reviews-toggle {
+    cursor: pointer;
+    font-size: .9rem;
+    color: #FF5A5F;
+    margin-left: 30px;
+}
+
+.reviews-toggle:hover {
+    text-decoration: underline;
 }
