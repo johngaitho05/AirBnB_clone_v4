@@ -16,7 +16,7 @@ $(document).ready(function () {
     }
   });
 
-  $.get('http://0.0.0.0:5002/api/v1/status/', function (data) {
+  $.get('http://52.23.178.146/api/v1/status/', function (data) {
     if (data?.status === 'OK') {
       $('#api_status').addClass('available');
     } else {
